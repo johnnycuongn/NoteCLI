@@ -13,7 +13,7 @@ const notes = require("./notes");
 //     console.log(`Adding "${options.a}" to note`);
 // }
 
-let argv = yargs
+let addArgv = yargs
     .command({
         command: "add",
         describe: "Add note",
@@ -30,22 +30,22 @@ let argv = yargs
             notes.addSingleNote(argv.text);
         },
     })
-    .command(
-        "remove",
-        true,
-        {
-            title: {
-                describe: "Note title",
-                demandOption: true,
-                type: "string",
-                alias: "t",
-            },
+    .help();
+
+let removeArgv = yargs.command(
+    "remove",
+    true,
+    {
+        title: {
+            describe: "Note title",
+            demandOption: true,
+            type: "string",
+            alias: "t",
         },
-        (argv) => {
-            console.log("Removing note " + argv.title);
-        }
-    )
-    .command("list", true, (argb) => {
-        console.log("Listing notes on date");
-    })
-    .help().argv;
+    },
+    (argv) => {
+        console.log("Removing note " + argv.title);
+    }
+);
+
+yargs.parse();

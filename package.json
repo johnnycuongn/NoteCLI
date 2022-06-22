@@ -2,12 +2,13 @@
   "name": "NoteFileSys",
   "version": "1.0.0",
   "description": "",
-  "main": "bin/index.js",
+  "main": "bin/notes.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "note": "./bin/index.js"
+    "notes": "./bin/notes.js",
+    "note": "./bin/note.js"
   },
   "keywords": [],
   "author": "",

@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { getDate, getHourMinute } = require("./utils");
+const { getDate, getHourMinute, parseSentence } = require("./utils");
 
 // async function start() {
 //     console.log(await fs.readFile('./notes.json', { encoding: 'utf-8' }, (err, dataBuffer) => {
@@ -18,6 +18,7 @@ function getNote(title) {
 }
 
 async function addSingleNote(body) {
+    if (body.trim().length === 0) return console.error("Empty note!!");
     const date = getDate();
     const currentHourMin = getHourMinute();
 
