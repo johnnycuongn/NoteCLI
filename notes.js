@@ -13,8 +13,27 @@ const { getDate, getHourMinute, parseSentence } = require("./utils");
 //     console.log('JSON NOTES: ' + data)
 // })
 
-function getNote(title) {
-    console.log("Gettiong note");
+function getNotesOnDate(day, month, year) {
+    if (day.startsWith("0")) {
+        day = day.slice(1);
+    }
+
+    if (month.startsWith("0")) {
+        month = month.slice(1);
+    }
+    fs.readdir("./data", (err, files) => {
+        const find = files.filter((file) =>
+            file.includes(`${day}_${month}_${year}`)
+        )[0];
+        if (!find)
+            return console.error(
+                `Unable to find notes on ${day}/${month}/${year}`
+            );
+        fs.readFile(`./data/${find}`, "utf-8", (err, data) => {
+            if (err) return console.error(err);
+            console.log(data);
+        });
+    });
 }
 
 async function addSingleNote(body) {
@@ -83,6 +102,6 @@ const loadNotes = async () => {
 };
 
 module.exports = {
-    getNote: getNote,
+    getNotesOnDate: getNotesOnDate,
     addSingleNote: addSingleNote,
 };

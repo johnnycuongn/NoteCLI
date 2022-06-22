@@ -1,6 +1,7 @@
 const yargs = require("yargs");
 const fs = require("fs");
 const notes = require("./notes");
+const { getYear } = require("./utils");
 
 // const options = yargs.option("a", {
 //     alias: "add",
@@ -47,5 +48,23 @@ let removeArgv = yargs.command(
         console.log("Removing note " + argv.title);
     }
 );
+
+let getArgv = yargs.command({
+    command: ["get", "view"],
+    describe: "Get notes on a date",
+    builder: {
+        date: {
+            describe: "date format in dd/mm/yyyy",
+            demandOption: true,
+            type: "string",
+            alias: "d",
+        },
+    },
+    handler(argv) {
+        if (!argv.date) return console.error("Please enter a date");
+        const dateArr = argv.date.split("/");
+        notes.getNotesOnDate(dateArr[0], dateArr[1], dateArr[2] ?? getYear());
+    },
+});
 
 yargs.parse();

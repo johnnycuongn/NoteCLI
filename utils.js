@@ -14,6 +14,13 @@ function getCurrentDate() {
     return dateObject.getDate();
 }
 
+function getYear() {
+    let ts = Date.now();
+
+    let date_ob = new Date(ts);
+
+    return date_ob.getFullYear();
+}
 /**
  * Get current date in format ddmmyyyy
  */
@@ -49,5 +56,6 @@ module.exports = {
     parseSentence: parseSentence,
     getCurrentDate: getCurrentDate,
     getDate: getFullDate,
+    getYear: getYear,
     getHourMinute: getHourMinute,
 };
