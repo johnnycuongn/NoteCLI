@@ -27,7 +27,7 @@ let argv = yargs
         },
         // Function for your command
         handler(argv) {
-            console.log("adding note");
+            notes.addSingleNote(argv.text);
         },
     })
     .command(
