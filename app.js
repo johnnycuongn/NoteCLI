@@ -4,28 +4,22 @@ const notes = require('./notes')
 
 // console.log(process.argv);
 
-// > note app.js add -t johnny -b cuong
-// > note app.js add -t="johnny" -b="cuong"
+
 yargs.command('add', true, {
-    title: {
-        describe: 'Note title',
-        demandOption: true,
-        type: 'string',
-        alias: 't'
-    }, body: {
+   text: {
         describe: 'Note body',
         demandOption: true,
         type: 'string',
-        alias: 'b'
+        alias: 't'
     }
-}, (argv) => {
-    console.log("Title: " + argv.title)
-    console.log("Body: " + argv.body)
-    notes.addNote(argv.title, argv.body)
-}).help().parseAsync()
+}, function (argv) {
+    // notes.addSingleNote(argv.text)
+    console.log('adding note')
+})
 
 
-let removeArgv = yargs.command('remove', true, {
+
+const removeArgv = yargs.command('remove', true, {
     title: {
         describe: 'Note title',
         demandOption: true,
@@ -50,3 +44,10 @@ const getArgv = yargs.command('get', true, {
 }, (argv) => {
     console.log('Getting ' + argv.title)
 }).parse()
+
+module.exports = {
+// addArgv: addArgv,
+removeArgv,
+listArgv,
+getArgv
+}
