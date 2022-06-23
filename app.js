@@ -59,8 +59,8 @@ let getArgv = yargs.command({
             alias: "d",
         },
     },
-    handler(argv) {
-        notes.getNotesOnDate(argv.date);
+    async handler(argv) {
+        await notes.getNotesOnDate(argv.date);
     },
 });
 
