@@ -1,6 +1,6 @@
 const yargs = require("yargs");
 const fs = require("fs");
-const notes = require("./notes");
+const notes = require("./handlers/notes");
 const { getYear } = require("./utils");
 
 // const options = yargs.option("a", {
@@ -26,7 +26,6 @@ let addArgv = yargs
                 alias: "t",
             },
         },
-        // Function for your command
         handler(argv) {
             notes.addSingleNote(argv.text);
         },
@@ -61,9 +60,7 @@ let getArgv = yargs.command({
         },
     },
     handler(argv) {
-        if (!argv.date) return console.error("Please enter a date");
-        const dateArr = argv.date.split("/");
-        notes.getNotesOnDate(dateArr[0], dateArr[1], dateArr[2] ?? getYear());
+        notes.getNotesOnDate(argv.date);
     },
 });
 

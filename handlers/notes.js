@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { getDate, getHourMinute, parseSentence } = require("./utils");
+const { getDate, getHourMinute, parseSentence } = require("../utils");
 
 const homeDir = require("os").homedir();
 const notesFolder = `${homeDir}/notes`;
@@ -8,7 +8,18 @@ if (!fs.existsSync(notesFolder)) {
     fs.mkdirSync(notesFolder);
 }
 
-function getNotesOnDate(day, month, year) {
+/**
+ *
+ * @param {*} date in format dd/mm/yyyy
+ * @returns
+ */
+function getNotesOnDate(date) {
+    if (!argv.date) return console.error("Please enter a date");
+    const dateArr = argv.date.split("/");
+    let day = dateArr[0];
+    let month = dateArr[1];
+    let year = dateArr[2];
+
     if (day.startsWith("0")) {
         day = day.slice(1);
     }

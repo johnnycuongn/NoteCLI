@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 
 const yargs = require("yargs");
-const notes = require("../notes");
+const notes = require("../handlers/notes");
 const { parseSentence } = require("../utils");
 
 if (yargs.argv._) {
