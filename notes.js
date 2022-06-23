@@ -1,17 +1,12 @@
 const fs = require("fs");
 const { getDate, getHourMinute, parseSentence } = require("./utils");
 
-// async function start() {
-//     console.log(await fs.readFile('./notes.json', { encoding: 'utf-8' }, (err, dataBuffer) => {
-//         console.log(dataBuffer)
-//     }))
-// }
+const homeDir = require("os").homedir();
+const notesFolder = `${homeDir}/notes`;
 
-// start()
-// debugger
-// fs.readFile('./notes.json', 'utf-8', (err, data) => {
-//     console.log('JSON NOTES: ' + data)
-// })
+if (!fs.existsSync(notesFolder)) {
+    fs.mkdirSync(notesFolder);
+}
 
 function getNotesOnDate(day, month, year) {
     if (day.startsWith("0")) {
@@ -21,7 +16,7 @@ function getNotesOnDate(day, month, year) {
     if (month.startsWith("0")) {
         month = month.slice(1);
     }
-    fs.readdir("./data", (err, files) => {
+    fs.readdir(notesFolder, (err, files) => {
         const find = files.filter((file) =>
             file.includes(`${day}_${month}_${year}`)
         )[0];
@@ -41,7 +36,7 @@ async function addSingleNote(body) {
     const date = getDate();
     const currentHourMin = getHourMinute();
 
-    const endFile = `./data/${date}.md`;
+    const endFile = `${notesFolder}/${date}.md`;
     if (!fs.existsSync(endFile)) {
         fs.writeFile(endFile, `# ${getDate("/")}\n`, (err) => {
             if (err) return console.error(err);
@@ -104,4 +99,5 @@ const loadNotes = async () => {
 module.exports = {
     getNotesOnDate: getNotesOnDate,
     addSingleNote: addSingleNote,
+    notesFolder: notesFolder,
 };
