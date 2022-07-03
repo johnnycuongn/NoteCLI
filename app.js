@@ -64,4 +64,20 @@ let getArgv = yargs.command({
     },
 });
 
+let editArgv = yargs.command({
+    command: ["edit"],
+    describe: "Edit notes on a date",
+    builder: {
+        date: {
+            describe: "date format in dd/mm/yyyy",
+            demandOption: true,
+            type: "string",
+            alias: "d",
+        }
+    },
+    async handler(argv) {
+        notes.editNotes(argv.date)
+    }
+})
+
 yargs.parse();
