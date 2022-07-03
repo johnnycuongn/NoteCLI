@@ -1,7 +1,7 @@
 const { existsSync, mkdirSync } = require("fs");
 const { readFile, readdir, writeFile, appendFile } = require("fs/promises");
 const { stdin } = require("process");
-const { getDate, getHourMinute, parseSentence, getYear } = require("../utils");
+const { getDate, getHourMinute, parseSentence, getYear, processDate } = require("../utils");
 
 const homeDir = require("os").homedir();
 const notesFolder = `${homeDir}/notes`;
@@ -16,21 +16,10 @@ if (!existsSync(notesFolder)) {
  * @returns
  */
 async function getNotesOnDate(date) {
-    if (!date) return console.error("Please enter a date");
-    const dateArr = date.split("/");
-    let day = dateArr[0];
-    let month = dateArr[1];
-    let year = dateArr[2] ?? getYear();
-
-    if (day.startsWith("0")) {
-        day = day.slice(1);
-    }
-
-    if (month.startsWith("0")) {
-        month = month.slice(1);
-    }
 
     try {
+        const {day, month, year} = processDate(date);
+
         const files = await readdir(notesFolder);
         const find = files.filter((file) =>
             file.includes(`${day}_${month}_${year}`)
@@ -83,21 +72,10 @@ async function addSingleNote(body) {
 }
 
 async function editNotesOnDate(date) {
-    if (!date) return console.error("Please enter a date");
-    const dateArr = date.split("/");
-    let day = dateArr[0];
-    let month = dateArr[1];
-    let year = dateArr[2] ?? getYear();
-
-    if (day.startsWith("0")) {
-        day = day.slice(1);
-    }
-
-    if (month.startsWith("0")) {
-        month = month.slice(1);
-    }
 
     try {
+        const {day, month, year} = processDate(date);
+
         const files = await readdir(notesFolder);
         const find = files.filter((file) =>
             file.includes(`${day}_${month}_${year}`)
@@ -112,7 +90,7 @@ async function editNotesOnDate(date) {
         vim.on('exit', process.exit);
 
     } catch (err) {
-        return console.error(err);
+        return console.error(err.message);
     }   
 }
 

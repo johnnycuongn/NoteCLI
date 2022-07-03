@@ -52,10 +52,34 @@ function getHourMinute() {
     return `${hours}:${minutes}`;
 }
 
+function processDate(date) {
+    if (!date || !date.includes("/")) throw Error("Please enter a date in dd/mm/yyyy");
+
+    const dateArr = date.split("/");
+    let day = dateArr[0];
+    let month = dateArr[1];
+    let year = dateArr[2] ?? getYear();
+
+    if (day.startsWith("0")) {
+        day = day.slice(1);
+    }
+
+    if (month.startsWith("0")) {
+        month = month.slice(1);
+    }
+
+    return {
+        day: day,
+        month: month,
+        year: year,
+    }
+}
+
 module.exports = {
     parseSentence: parseSentence,
     getCurrentDate: getCurrentDate,
     getDate: getFullDate,
     getYear: getYear,
     getHourMinute: getHourMinute,
+    processDate
 };
