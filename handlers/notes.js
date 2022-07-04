@@ -101,9 +101,32 @@ async function editNotesOnDate(date) {
     }
 }
 
+async function getMultipleNotes() {
+    try {
+        let files = await readdir(notesFolder);
+
+        // Removing other files
+        files = files.filter((f) => {
+            return f !== ".DS_Store";
+        });
+
+        //
+        files = files.map((f) => {
+            return f.slice(0, -3).replaceAll("_", "/");
+        });
+
+        files = files.reverse();
+
+        return files;
+    } catch (err) {
+        return console.error(err.message);
+    }
+}
+
 module.exports = {
     getNotesOnDate: getNotesOnDate,
     addSingleNote: addSingleNote,
     notesFolder: notesFolder,
     editNotes: editNotesOnDate,
+    getNotes: getMultipleNotes,
 };

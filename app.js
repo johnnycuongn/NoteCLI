@@ -2,6 +2,7 @@ const yargs = require("yargs");
 const fs = require("fs");
 const notes = require("./handlers/notes");
 const { getYear } = require("./utils");
+const { getNotes } = require("./handlers/notes");
 
 // require('yargs')
 //   .command('$0 [name]', 'start the server',(yargs) => {
@@ -79,5 +80,24 @@ let editArgv = yargs.command("edit", "Edit notes file on a date", (y) => {
         description: "Date in format dd/mm/yyy",
     });
 });
+
+let listingArgv = yargs.command(
+    ["list", "ls"],
+    "List recent dates that have notes",
+    (y) => {
+        y.option("all", {
+            alias: "a",
+        });
+    },
+    async (argv) => {
+        if (argv.all) {
+            console.log("Listing all dates with notes:\n");
+        } else {
+            console.log("Listing recent dates with notes:\n");
+        }
+        const noteFiles = await getNotes();
+        console.log(noteFiles.join("\n"));
+    }
+);
 
 yargs.parse();
