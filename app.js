@@ -3,81 +3,81 @@ const fs = require("fs");
 const notes = require("./handlers/notes");
 const { getYear } = require("./utils");
 
-// const options = yargs.option("a", {
-//     alias: "add",
-//     describe: "Adding Note",
-//     type: "string",
-//     demandOption: true,
-// }).argv;
-
-// if (options.a) {
-//     console.log(`Adding "${options.a}" to note`);
-// }
+// require('yargs')
+//   .command('$0 [name]', 'start the server',(yargs) => {
+//     yargs
+//       .positional('name', {
+//         describe: 'name to display',
+//         default: 'world'
+//       })
+//       .option('add', {
+//         alias: 'a',
+//         type: 'string',
+//         description: 'body text for the note'
+//       })
+//       .option('edit', {
+//         alias: 'e',
+//         type: 'string',
+//         description: 'Edit a note'
+//       })
+//   }, (argv) => {
+//     console.log("Add:" + argv.add)
+//     console.log("Edit:" + argv.edit);
+//   })
 
 let addArgv = yargs
-    .command({
-        command: "add",
-        describe: "Add note",
-        builder: {
-            text: {
-                describe: "Note body",
-                demandOption: true,
-                type: "string",
+    .command(
+        "add",
+        "Add note",
+        (y) => {
+            y.option("text", {
                 alias: "t",
-            },
+                type: "string",
+                description: "Body text for the note",
+            });
         },
-        handler(argv) {
+        (argv) => {
             notes.addSingleNote(argv.text);
-        },
-    })
+        }
+    )
     .help();
 
 let removeArgv = yargs.command(
     "remove",
-    true,
-    {
-        title: {
-            describe: "Note title",
-            demandOption: true,
+    "Remove note",
+    (y) => {
+        y.option("date", {
+            alias: "d",
             type: "string",
-            alias: "t",
-        },
+            description: "Date for removing note",
+        });
     },
     (argv) => {
-        console.log("Removing note " + argv.title);
+        console.log("Removing note " + argv.date);
     }
 );
 
-let getArgv = yargs.command({
-    command: ["get", "view"],
-    describe: "Get notes on a date",
-    builder: {
-        date: {
-            describe: "date format in dd/mm/yyyy",
-            demandOption: true,
-            type: "string",
+let getArgv = yargs.command(
+    ["get", "view"],
+    "View notes on a date",
+    (y) => {
+        y.option("date", {
             alias: "d",
-        },
+            type: "string",
+            description: "Date in format dd/mm/yyy",
+        });
     },
-    async handler(argv) {
+    async (argv) => {
         await notes.getNotesOnDate(argv.date);
-    },
-});
-
-let editArgv = yargs.command({
-    command: ["edit"],
-    describe: "Edit notes on a date",
-    builder: {
-        date: {
-            describe: "date format in dd/mm/yyyy",
-            demandOption: true,
-            type: "string",
-            alias: "d",
-        }
-    },
-    async handler(argv) {
-        notes.editNotes(argv.date)
     }
-})
+);
+
+let editArgv = yargs.command("edit", "Edit notes file on a date", (y) => {
+    y.option("date", {
+        alias: "d",
+        type: "string",
+        description: "Date in format dd/mm/yyy",
+    });
+});
 
 yargs.parse();
