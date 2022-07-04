@@ -1,7 +1,13 @@
 const { existsSync, mkdirSync } = require("fs");
 const { readFile, readdir, writeFile, appendFile } = require("fs/promises");
 const { stdin } = require("process");
-const { getDate, getHourMinute, parseSentence, getYear, processDate } = require("../utils");
+const {
+    getDate,
+    getHourMinute,
+    parseSentence,
+    getYear,
+    processDate,
+} = require("../utils");
 
 const homeDir = require("os").homedir();
 const notesFolder = `${homeDir}/notes`;
@@ -16,9 +22,8 @@ if (!existsSync(notesFolder)) {
  * @returns
  */
 async function getNotesOnDate(date) {
-
     try {
-        const {day, month, year} = processDate(date);
+        const { day, month, year } = processDate(date);
 
         const files = await readdir(notesFolder);
         const find = files.filter((file) =>
@@ -36,7 +41,7 @@ async function getNotesOnDate(date) {
 }
 
 async function addSingleNote(body) {
-    if (body.trim().length === 0) return console.error("Empty note!!");
+    if (!body || body.trim().length === 0) return console.error("Empty note!!");
     const date = getDate();
     const currentHourMin = getHourMinute();
 
@@ -72,9 +77,8 @@ async function addSingleNote(body) {
 }
 
 async function editNotesOnDate(date) {
-
     try {
-        const {day, month, year} = processDate(date);
+        const { day, month, year } = processDate(date);
 
         const files = await readdir(notesFolder);
         const find = files.filter((file) =>
@@ -86,17 +90,20 @@ async function editNotesOnDate(date) {
             );
 
         stdin.pause();
-        var vim = require('child_process').spawn('vim', [`${notesFolder}/${find}`], {stdio: 'inherit'});
-        vim.on('exit', process.exit);
-
+        var vim = require("child_process").spawn(
+            "vim",
+            [`${notesFolder}/${find}`],
+            { stdio: "inherit" }
+        );
+        vim.on("exit", process.exit);
     } catch (err) {
         return console.error(err.message);
-    }   
+    }
 }
 
 module.exports = {
     getNotesOnDate: getNotesOnDate,
     addSingleNote: addSingleNote,
     notesFolder: notesFolder,
-    editNotes: editNotesOnDate
+    editNotes: editNotesOnDate,
 };
